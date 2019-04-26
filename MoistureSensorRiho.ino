@@ -8,8 +8,8 @@
 */ 
 /*
 PINTOUT: 
-DHT22 1.juhe=Toide 2.juhe=D5 4.juhe=Ground
-LUX andur VCC=Toide GND=Ground SCL=D1 SDA=D2
+DHT22 1.juhe=Toide 2.juhe=D5 4.juhe=Ground+++
+LUX andur VCC=Toide GND=Ground SCL=D1 SDA=D2+++
 Moisture Sensor VCC=Toide A0 GND
 Kaugus D6 = TRIGGER D7 = ECHO
 Mootor D8
@@ -35,18 +35,19 @@ ESP8266WiFiMulti WiFiMulti;
 #define USE_SERIAL Serial
 #define TRIGGER 12
 #define ECHO    13
+#define MOTORPIN 15
+
 
 
 
 
 
 void setup(){
- Serial.begin(57600);
- //pinMode(8,OUTPUT);/*This is D8 on the NODEMCU*/
- /*PURPLE IS GROUND*/
- //pinMode(TRIGGER, OUTPUT);
- //pinMode(ECHO, INPUT);
- //pinMode(BUILTIN_LED, OUTPUT);
+ Serial.begin(115200);
+ pinMode(MOTORPIN, OUTPUT);/*This is D8 on the NODEMCU*/
+ pinMode(TRIGGER, OUTPUT);
+ pinMode(ECHO, INPUT);
+ pinMode(BUILTIN_LED, OUTPUT);
  dht.begin();
  /* Initialise the sensor */
  tsl.enableAutoRange(true);
@@ -56,92 +57,45 @@ void setup(){
 }
 
 void loop(){
-/*
-  for(int i;i<20;i++){
-  String payload;
-  if((WiFiMulti.run() == WL_CONNECTED)) {
-        HTTPClient http;
-        USE_SERIAL.print("[HTTP] begin...\n");
-        http.begin("http://internetofasjad.000webhostapp.com/mootor.txt"); //HTTP 
-        USE_SERIAL.print("[HTTP] GET...\n");
-        int httpCode = http.GET();
-        if(httpCode > 0) {
-            USE_SERIAL.printf("[HTTP] GET... code: %d\n", httpCode);
-            if(httpCode == HTTP_CODE_OK) {
-                payload = http.getString();
-                USE_SERIAL.println(payload);
-            }
-        } else {
-            USE_SERIAL.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
-        }
-        http.end();
-    }
-  delay(500);
   
-  
-
-  if(payload="true"){
-    digitalWrite(14,HIGH);
-    delay(2500);
-    digitalWrite(14,LOW);
-    if((WiFiMulti.run() == WL_CONNECTED)) {
-        HTTPClient http;
-        USE_SERIAL.print("[HTTP] begin...\n");
-        http.begin("http://internetofasjad.000webhostapp.com/write_data.php?done=true"); //HTTP 
-        USE_SERIAL.print("[HTTP] GET...\n");
-        int httpCode = http.GET();
-        if(httpCode > 0) {
-            USE_SERIAL.printf("[HTTP] GET... code: %d\n", httpCode);
-            if(httpCode == HTTP_CODE_OK) {
-                String payload = http.getString();
-                USE_SERIAL.println(payload);
-            }
-        } else {
-            USE_SERIAL.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
-        }
-        http.end();
-    }
-  }
-  delay(5000);
-  
-  }
-  */
 //------------------------Ultrasonic-----------------------------------------------------------
- /*long duration, distance;
+ long duration, distance;
   
   digitalWrite(TRIGGER, LOW);  
   delayMicroseconds(2); 
   
   digitalWrite(TRIGGER, HIGH);
   delayMicroseconds(10); 
-
   
   digitalWrite(TRIGGER, LOW);
   duration = pulseIn(ECHO, HIGH);
   delay(500);
   distance = (duration/2) / 29.1;
+  distance = 35-distance;
   
   Serial.print(distance);
   Serial.println("Centimeter:");
-*/
+
 //------------------------Moisture and motor-----------------------------------------------------------  
- /*delay(500);//1800000
+ delay(500);//1800000
  Serial.print("Moisture Sensor Value:");
  Serial.println(analogRead(0));
  int Data = analogRead(0);
  Serial.println(Data);
  delay(500);
- if (analogRead(0)>800){
+ if (Data>600){
+    Serial.println(Data);
     Serial.println("Pump on");
-    digitalWrite(14,HIGH);
-    delay(3000);
+    digitalWrite(MOTORPIN, HIGH);
+    delay(5000);
  }else{
     Serial.println("Pump off");
+    digitalWrite(MOTORPIN, LOW);
     
  }
  delay(500);
- digitalWrite(14,LOW);
- */
+ digitalWrite(MOTORPIN, LOW);
+ 
 //-----------------Light and DHT22------------------------
 // Get a new sensor event 
   sensors_event_t event;
@@ -172,9 +126,9 @@ float light_level = event.light;
   float t = 500; //Temperature
   float light_level = 500;
   */
-  float Data=500;//Humidity of soil
+  //float Data=500;//Humidity of soil
   
-  float distance=50;
+  //float distance=50;
   
 if((WiFiMulti.run() == WL_CONNECTED)) {
 
@@ -208,5 +162,5 @@ if((WiFiMulti.run() == WL_CONNECTED)) {
 
         http.end();
     }
-    delay(500);
+    delay(3000);
 }
