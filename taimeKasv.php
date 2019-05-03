@@ -9,6 +9,7 @@
             table tr {
                 width: 20px;
                 text-align: center;
+                margin: 5px;
             }
             table th {
                 width: 70px;
@@ -23,11 +24,12 @@
         
         <table>
             <tr>
-                <th>Temperatuur</th>
-                <th>Niiskus</th>
-                <th>Valgus</th>
-                <th>Pinnase niiskus</th>
-                <th>Taime kõrgus</th>
+                <th>Aeg</th>
+                <th>Temperatuur(&#176C)</th>
+                <th>Niiskus(%)</th>
+                <th>Valgus(Lux)</th>
+                <th>Pinnase niiskus(%)</th>
+                <th>Taime kõrgus(cm)</th>
             </tr>
             
         <?php
