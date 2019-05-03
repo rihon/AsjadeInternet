@@ -10,7 +10,7 @@
     $done = $_REQUEST["done"];
     $currentTimeinSeconds = time();
     // converts the time in seconds to current date  
-    $currentDate = date('Y/m/d H:i:s', $currentTimeinSeconds); 
+    $currentDate = date('Y-m-d H:i:s', $currentTimeinSeconds); 
 
     //TURN ON WATERING MOTOR
     if($done == "true"){
@@ -26,8 +26,7 @@
     //WRITE DATA TO FILE
     if (isset($temperatuur) and isset($niiskus) and isset($valgus) and isset($pNiiskus) and isset($taimeKorgus)){
         $f=fopen("asjadeInternet.txt", "a");
-        fwrite($f, floatval($temperatuur).";".floatval($niiskus).";".floatval($valgus).";".floatval($pNiiskus).";"
-        .floatval($taimeKorgus).";".($currentDate)."\n");
+        fwrite($f, ($currentDate).";".floatval($temperatuur).";".floatval($niiskus).";".floatval($valgus).";".floatval($pNiiskus).";".floatval($taimeKorgus)."\n");
         fclose($f);
         echo "Salvestati $temperatuur, $niiskus, $valgus, $pNiiskus, $taimeKorgus"; 
     } else {
